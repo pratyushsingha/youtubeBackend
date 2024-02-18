@@ -5,10 +5,32 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import { getMongoosePaginationOptions } from "../utils/helper.js";
 
 const getAllVideos = asyncHandler(async (req, res) => {
   const { page = 1, limit = 10, query, sortBy, sortType, userId } = req.query;
   //TODO: get all videos based on query, sort, pagination
+  const videoAggregate = Video.aggregate([
+    {
+      $match: {
+        isPublished: true,
+      },
+    },
+  ]);
+  const videos = await Video.aggregatePaginate(
+    videoAggregate,
+    getMongoosePaginationOptions({
+      page,
+      limit,
+      customLabels: {
+        totalDocs: "totalVideos",
+        docs: "videos",
+      },
+    })
+  );
+  return res
+    .status(200)
+    .json(new ApiResponse(201, videos, "videos fetched successfully"));
 });
 
 const publishAVideo = asyncHandler(async (req, res) => {
