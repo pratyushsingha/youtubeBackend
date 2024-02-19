@@ -68,7 +68,7 @@ const updateTweet = asyncHandler(async (req, res) => {
   }
 
   const verifyUser =
-    existingTweet.owner?._id.toString() === req.user?._id.toString();
+    existingTweet.owner?.toString() === req.user?._id.toString();
   if (!verifyUser) {
     throw new ApiError(400, "unauthorized access");
   }
@@ -101,7 +101,7 @@ const deleteTweet = asyncHandler(async (req, res) => {
   }
 
   const verifyUser =
-    existingTweet.owner?._id.toString() === req.user?._id.toString();
+    existingTweet.owner?.toString() === req.user?._id.toString();
   if (!verifyUser) {
     throw new ApiError(400, "unauthorized access");
   }
