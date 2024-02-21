@@ -30,7 +30,7 @@ const registerUser = asyncHandler(async (req, res) => {
   if (
     [fullName, email, username, password].some((field) => field?.trim === "")
   ) {
-    throw new APiError(400, "all fields are required");
+    throw new ApiError(400, "all fields are required");
   }
 
   const existingUser = await User.findOne({
@@ -38,7 +38,7 @@ const registerUser = asyncHandler(async (req, res) => {
   });
 
   if (existingUser) {
-    throw new APiError(409, "user with this email or username already exists");
+    throw new ApiError(409, "user with this email or username already exists");
   }
   console.log(req.files);
 
