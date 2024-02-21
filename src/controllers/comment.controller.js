@@ -71,7 +71,7 @@ const updateComment = asyncHandler(async (req, res) => {
   const commentExists = await Comment.findById(commentId);
   if (!commentExists) throw new ApiError(400, "comment doesn't exists");
 
-  if (!(Comment.owner.toString() === req.user?._id.toString()))
+  if (!(commentExists.owner.toString() === req.user?._id.toString()))
     throw new ApiError(400, "unathorized access");
 
   if (!content) throw new ApiError(422, "comment is required");
